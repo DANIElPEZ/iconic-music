@@ -1,0 +1,11 @@
+.dart_tool/
+.idea/
+build/
+test/
+.env
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+analysis_options.yaml
+iconicmusic.iml
+pubspec.lock
