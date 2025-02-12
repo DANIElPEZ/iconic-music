@@ -12,24 +12,17 @@ class musicProvider extends ChangeNotifier {
   List<Musicmodel> musics = [];
   List<Musicmodel> myMusics = [];
 
-  musicProvider() {
-    checkConnection();
-  }
-
   //check the connection
-  Future<void> checkConnection() async {
-    try {
+  Future<void> checkConnection() async{
+    try{
       final connectivityResult = await Connectivity().checkConnectivity();
-
       getConnection = (connectivityResult[0] == ConnectivityResult.mobile || connectivityResult[0] == ConnectivityResult.wifi);
-      notifyListeners();
-    } catch (e) {
-      print('Error checking connectivity: $e');
-      getConnection = false;
+    }catch(e){
+      print(e);
+      getConnection=false;
+    }finally{
       notifyListeners();
     }
-    getConnection=true;
-    notifyListeners();
   }
 
   //supabase get cloud musics
@@ -104,7 +97,7 @@ class musicProvider extends ChangeNotifier {
       List<Map<String, dynamic>> data = await dbHelper.getMusic();
       myMusics =
           data.map((recipeData) => Musicmodel.fromJSON(recipeData)).toList();
-      await Future.delayed(Duration(seconds: 2));
+      if(!myMusics.isEmpty) await Future.delayed(Duration(microseconds: 1500));
     } catch (e) {
       print(e);
     } finally {

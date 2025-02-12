@@ -16,6 +16,7 @@ class AudioServiceHandler extends BaseAudioHandler with QueueHandler, SeekHandle
         stop(); // Detiene la reproducción cuando termina la lista
       }
     });
+    print('ejcutado inicio');
   }
 
   Future<void> loadPlaylist(List<String> urls) async {
@@ -27,12 +28,14 @@ class AudioServiceHandler extends BaseAudioHandler with QueueHandler, SeekHandle
     queue.add(urls
         .map((url) => MediaItem(id: url, title: url.split('/').last))
         .toList());
+    print('cargando');
   }
 
   Future<void> startPlayback() async {
     if (_audioPlayer.processingState == ProcessingState.idle) {
       await _audioPlayer.play();
     }
+    print('reproduciendo');
   }
 
   @override

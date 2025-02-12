@@ -37,11 +37,6 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
         curve: Curves.easeInOut,
       ),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final music_provider = Provider.of<musicProvider>(context, listen: false);
-      music_provider.fetchMusics();
-    });
   }
 
   @override

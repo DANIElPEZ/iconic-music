@@ -21,18 +21,20 @@ class _Favoritemusic extends State<Favorite> {
 
   @override
   void initState() {
+    music_provider=Provider.of<musicProvider>(context, listen: false);
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      music_provider = Provider.of<musicProvider>(context, listen: false);
-      music_provider?.getMyMusics();
-    });
   }
 
   Future<void> playPlaylist() async{
-    final playListMusics = music_provider!.myMusics.map((music) => music.file_url).toList();
-    await (widget.audioHandler as AudioServiceHandler).loadPlaylist(playListMusics);
-    await widget.audioHandler.play();
+    try {
+      Future.delayed(Duration(microseconds: 900));
+      final playListMusics = music_provider?.myMusics.map((music)=>(music.file_url)).toList();
+      final playlist_handler=AudioServiceHandler();
+      await playlist_handler.loadPlaylist(playListMusics!);
+      await playlist_handler.startPlayback();
+    }catch(e){
+      print('error $e');
+    }
   }
 
   @override
@@ -66,7 +68,20 @@ class _Favoritemusic extends State<Favorite> {
                         bottom: 16,
                         right: 16,
                         child: FloatingActionButton(
-                            onPressed: playPlaylist,
+                            onPressed: (){
+                              showDialog(context: context, builder: (context)=>AlertDialog(
+                                icon: Image.asset('logo/icon.png', width: 50, height: 50),
+                                content: Text('Under development.',
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.playfairDisplay(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600
+                                    )),
+                                backgroundColor: colorsPalette[1],
+                              ));
+                              //playPlaylist();
+                            },
                             backgroundColor: colorsPalette[4],
                             child: Icon(Icons.playlist_play,
                                 color: Colors.white, size: 32)))
