@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
 import 'package:iconicmusic/services/audio_service_initializer.dart';
@@ -15,9 +14,11 @@ void main() async {
   loadServices();
   final audioHandler=await initAudioHandler();
 
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => musicProvider())],
-      child: MyApp(audioHandler: audioHandler)));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_){
+    runApp(MultiProvider(
+        providers: [ChangeNotifierProvider(create: (_) => musicProvider())],
+        child: MyApp(audioHandler: audioHandler)));
+  });
 }
 
 Future<void> loadServices() async{

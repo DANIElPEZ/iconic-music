@@ -23,9 +23,10 @@ def upload_mp3_to_supabase(file_path, title, artist, image_url):
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    file_path = ".mp3"
-    title = ""
-    artist = ""
-    image_url = ""
     
-    upload_mp3_to_supabase(file_path, title, artist, image_url)
+    upload_mp3_to_supabase(
+        file_path='.mp3', 
+        title='', 
+        artist='',
+        image_url=''
+    )

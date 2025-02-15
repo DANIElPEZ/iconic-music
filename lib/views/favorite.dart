@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconicmusic/colors_and_shapes/colors.dart';
+import 'package:iconicmusic/models/musicModel.dart';
 import 'package:provider/provider.dart';
 import 'package:iconicmusic/components/cardMusic.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:iconicmusic/services/audio_handler_playlist.dart';
+import 'package:iconicmusic/services/audio_handler.dart';
 
 class Favorite extends StatefulWidget {
   Favorite({required this.audioHandler});
@@ -28,13 +29,16 @@ class _Favoritemusic extends State<Favorite> {
   Future<void> playPlaylist() async{
     try {
       Future.delayed(Duration(microseconds: 900));
-      final playListMusics = music_provider?.myMusics.map((music)=>(music.file_url)).toList();
-      final playlist_handler=AudioServiceHandler();
-      await playlist_handler.loadPlaylist(playListMusics!);
-      await playlist_handler.startPlayback();
+      List<MediaItem> playListMusics = music_provider!.myMusics.map((music)=>convertToMediaItem(music)).toList();
+      await (widget.audioHandler as audioHandler).setPlaylist(playListMusics);
     }catch(e){
       print('error $e');
     }
+  }
+
+  MediaItem convertToMediaItem(Musicmodel music){
+    return MediaItem(id: music.file_url, title: music.title,
+    artUri: Uri.parse(music.image_url));
   }
 
   @override
@@ -68,20 +72,7 @@ class _Favoritemusic extends State<Favorite> {
                         bottom: 16,
                         right: 16,
                         child: FloatingActionButton(
-                            onPressed: (){
-                              showDialog(context: context, builder: (context)=>AlertDialog(
-                                icon: Image.asset('logo/icon.png', width: 50, height: 50),
-                                content: Text('Under development.',
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.playfairDisplay(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                                backgroundColor: colorsPalette[1],
-                              ));
-                              //playPlaylist();
-                            },
+                            onPressed: playPlaylist,
                             backgroundColor: colorsPalette[4],
                             child: Icon(Icons.playlist_play,
                                 color: Colors.white, size: 32)))

@@ -4,6 +4,10 @@ import 'package:just_audio/just_audio.dart';
 
 class audioHandler extends BaseAudioHandler {
   final AudioPlayer audioPlayer= AudioPlayer();
+  final List<MediaItem> playlist=[];
+  int currentIndex=-1;
+  bool isPlaylistMode=false;
+
   StreamController<bool>? onCompletionController;
   audioHandler() {
     onCompletionController= StreamController<bool>();
@@ -12,21 +16,73 @@ class audioHandler extends BaseAudioHandler {
 
    Stream<bool> get onCompletionStream => onCompletionController?.stream??Stream.value(false);
 
-  Future<void> setAudio(
-      String musicUrl, String title, String artist) async {
+  Future<void> playSingleTrack(
+      String musicUrl, String title, String artist, image_url) async {
 
+    isPlaylistMode=false;
     try {
       await audioPlayer.setUrl(musicUrl);
       mediaItem.add(MediaItem(
         id: musicUrl,
         title: title,
         artist: artist,
+        artUri: Uri.parse(image_url),
         duration: audioPlayer.duration,
       ));
       play();
     } catch (e) {
       print('Error initializing player: $e');
     }
+  }
+
+  Future<void> setPlaylist(List<MediaItem> newPlaylist)async{
+    isPlaylistMode=true;
+    stop();
+    playlist.clear();
+    playlist.addAll(newPlaylist);
+    currentIndex=0;
+    await loadCurrentTrack();
+  }
+
+  Future<void> loadCurrentTrack() async{
+    if(currentIndex<0 || currentIndex>=playlist.length) return;
+
+    final mediaItem=playlist[currentIndex];
+    try{
+      await audioPlayer.setUrl(mediaItem.id);
+      this.mediaItem.add(mediaItem);
+      play();
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> next() async{
+    if(!isPlaylistMode || playlist.isEmpty) return;
+
+    if(currentIndex < playlist.length-1){
+      currentIndex++;
+      await loadCurrentTrack();
+    }else{
+      stop();
+    }
+  }
+
+  Future<void> previous()async{
+    if(!isPlaylistMode || playlist.isEmpty) return;
+
+    if(currentIndex>0){
+      currentIndex--;
+      await loadCurrentTrack();
+    }else{
+      stop();
+    }
+  }
+
+  Future<void> playAtIndex(int index) async{
+    if(!isPlaylistMode || index<0 || index>=playlist.length) return;
+    currentIndex=index;
+    await loadCurrentTrack();
   }
 
   void listenToPlayerState() {
@@ -36,8 +92,10 @@ class audioHandler extends BaseAudioHandler {
 
       playbackState.add(playbackState.value.copyWith(
         controls: [
+          if(isPlaylistMode) MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
-          MediaControl.stop
+          MediaControl.stop,
+          if(isPlaylistMode) MediaControl.skipToNext
         ],
         processingState: processingState,
         playing: playing,
@@ -46,7 +104,11 @@ class audioHandler extends BaseAudioHandler {
       // Notifica si la música ha terminado
       if (processingState == AudioProcessingState.completed) {
         onCompletionController?.add(true);
-        stop();
+        if(isPlaylistMode){
+          next();
+        }else {
+          stop();
+        }
       }
     });
 
@@ -109,5 +171,21 @@ class audioHandler extends BaseAudioHandler {
   Future<void> seek(Duration position) async {
     await audioPlayer.seek(position);
     super.seek(position);
+  }
+
+  @override
+  Future<void> skipToNext()async{
+    if(isPlaylistMode){
+      await next();
+      super.skipToNext();
+    }
+  }
+
+  @override
+  Future<void> skipToPrevious() async{
+    if(isPlaylistMode){
+      await previous();
+      super.skipToPrevious();
+    }
   }
 }

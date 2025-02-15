@@ -103,6 +103,7 @@ class ReplayPage extends StatelessWidget {
                                   file_url: file_url,
                                   title: title,
                                   artist: artist,
+                              image_url: photo,
                               audioHandler: audioHandler)
                             ]))))));
   }

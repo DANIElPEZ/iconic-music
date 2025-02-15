@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:iconicmusic/services/audio_handler.dart';
 
 class Controls extends StatefulWidget {
-  Controls({required this.file_url, required this.artist, required this.title, required this.audioHandler});
+  Controls({required this.file_url, required this.artist, required this.title, required this.audioHandler, required this.image_url});
 
-  final String file_url, title, artist;
+  final String file_url, title, artist, image_url;
   final AudioHandler audioHandler;
 
   @override
@@ -26,7 +26,7 @@ class ControlsState extends State<Controls> {
 
   Future<void> initializeAudioHandler() async {
     try {
-      await (widget.audioHandler as audioHandler).setAudio(widget.file_url, widget.title, widget.artist);
+      await (widget.audioHandler as audioHandler).playSingleTrack(widget.file_url, widget.title, widget.artist, widget.image_url);
 
       widget.audioHandler.mediaItem.listen((mediaItem) {
           setState(() {
@@ -74,8 +74,6 @@ class ControlsState extends State<Controls> {
   }
 
   Future<void> seekRelative(int seconds) async {
-    if (widget.audioHandler == null) return;
-
     final newPosition = position.inSeconds + seconds;
     if (newPosition < 0) {
       await widget.audioHandler.seek(Duration.zero);
@@ -88,7 +86,6 @@ class ControlsState extends State<Controls> {
 
   @override
   Widget build(BuildContext context) {
-    print(errorMessage);
 
     if(isLoading){
       return Column(children: [
