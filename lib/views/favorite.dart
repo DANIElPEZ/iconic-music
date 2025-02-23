@@ -18,16 +18,10 @@ class Favorite extends StatefulWidget {
 }
 
 class _Favoritemusic extends State<Favorite> {
-  musicProvider? music_provider;
-
-  @override
-  void initState() {
-    music_provider=Provider.of<musicProvider>(context, listen: false);
-    super.initState();
-  }
 
   Future<void> playPlaylist() async{
     try {
+      final music_provider=Provider.of<musicProvider>(context, listen: false);
       Future.delayed(Duration(microseconds: 900));
       List<MediaItem> playListMusics = music_provider!.myMusics.map((music)=>convertToMediaItem(music)).toList();
       await (widget.audioHandler as audioHandler).setPlaylist(playListMusics);
@@ -66,6 +60,7 @@ class _Favoritemusic extends State<Favorite> {
                               artist: musics[index].artist,
                               url: musics[index].file_url,
                               image: musics[index].image_url,
+                          url_lrc: musics[index].url_lrc,
                           audioHandler: widget.audioHandler);
                         }),
                     Positioned(

@@ -29,6 +29,7 @@ class musicProvider extends ChangeNotifier {
   Future<void> fetchMusics() async {
     isLoading = true;
     notifyListeners();
+    checkConnection();
     try {
       if (!getConnection) {
         musics = [];
@@ -38,7 +39,7 @@ class musicProvider extends ChangeNotifier {
       musics = List<Musicmodel>.from(
           response.map((music) => Musicmodel.fromJSON(music)));
     } catch (e) {
-      print(e);
+      print('error$e');
       musics = [];
     } finally {
       isLoading = false;
@@ -58,7 +59,8 @@ class musicProvider extends ChangeNotifier {
           'title': myMusic.title,
           'artist': myMusic.artist,
           'file_url': myMusic.file_url,
-          'image_url': myMusic.image_url
+          'image_url': myMusic.image_url,
+          'url_lrc':myMusic.url_lrc
         };
 
         await dbHelper.insertMusic(music);
@@ -96,7 +98,7 @@ class musicProvider extends ChangeNotifier {
       }
       List<Map<String, dynamic>> data = await dbHelper.getMusic();
       myMusics =
-          data.map((recipeData) => Musicmodel.fromJSON(recipeData)).toList();
+          data.map((music) => Musicmodel.fromJSON(music)).toList();
       if(!myMusics.isEmpty) await Future.delayed(Duration(microseconds: 1500));
     } catch (e) {
       print(e);

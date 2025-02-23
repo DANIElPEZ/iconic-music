@@ -104,7 +104,7 @@ class _HomePage extends State<HomePage> {
                                   fontWeight: FontWeight.w900
                               )
                           ),
-                          icon: Image.asset('logo/icon.png', width: 50, height: 50),
+                          icon: Image.asset('assets/icon.png', width: 50, height: 50),
                           actions: [ElevatedButton(onPressed: (){
                             if (rewardedAd != null) {
                               rewardedAd!.show(
@@ -140,11 +140,8 @@ class _HomePage extends State<HomePage> {
             ])),
         bottomNavigationBar: Container(
             height: 80,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-            ),
             child: CustomPaint(
-                painter: customNavShape(),
+                painter: customNavShape(bgColor: colorsPalette[1], colors: [colorsPalette[0], colorsPalette[3],colorsPalette[1], colorsPalette[3]]),
                 child: NavigationBar(
                     onDestinationSelected: (int index) {
                       setState(() {

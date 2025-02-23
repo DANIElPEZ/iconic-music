@@ -46,8 +46,6 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
   Future<void> loadSearchController()async{
     final music=Provider.of<musicProvider>(context, listen: false);
     await music.checkConnection();
-    await Future.delayed(Duration(microseconds: 900));
-    await music.fetchMusics();
     await Future.delayed(Duration(microseconds: 800));
     filteredMusicList=music.musics;
     searchController.addListener(filterMusicList);
@@ -76,7 +74,7 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
   Future<void> findMusic(BuildContext context)async{
     return showDialog(context: context,
         barrierDismissible: false,
-        builder: (context)=>AlertDialog(icon: Image.asset('logo/icon.png', width: 50, height: 50),
+        builder: (context)=>AlertDialog(icon: Image.asset('assets/icon.png', width: 50, height: 50),
       title: Text('Search your music',
       style: GoogleFonts.playfairDisplay(
           color: Colors.white,
@@ -150,14 +148,15 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
                   filteredMusicList.isEmpty?
                   ListView.builder(
                     itemCount: musics.length,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, index){
                       return Cardmusic(
                           id: musics[index].id,
                           title: musics[index].title,
                           artist: musics[index].artist,
                           url: musics[index].file_url,
                           image: musics[index].image_url,
-                      audioHandler: widget.audioHandler);
+                      audioHandler: widget.audioHandler,
+                      url_lrc: musics[index].url_lrc);
                     }):
                   ListView.builder(
                       itemCount: filteredMusicList.length,
@@ -168,6 +167,7 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
                             artist: filteredMusicList[index].artist,
                             url: filteredMusicList[index].file_url,
                             image: filteredMusicList[index].image_url,
+                            url_lrc: musics[index].url_lrc,
                             audioHandler: widget.audioHandler);
                       }),
                   Positioned(

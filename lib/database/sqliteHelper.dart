@@ -25,7 +25,8 @@ class DatabaseHelper {
         title TEXT,
         artist TEXT,
         file_url TEXT,
-        image_url TEXT
+        image_url TEXT,
+        url_lrc TEXT
       )
     '''
       );
@@ -38,7 +39,8 @@ class DatabaseHelper {
         title TEXT,
         artist TEXT,
         file_url TEXT,
-        image_url TEXT
+        image_url TEXT,
+        url_lrc TEXT
       )
       '''
           );

@@ -11,10 +11,11 @@ class Cardmusic extends StatelessWidget {
       required this.artist,
       required this.url,
       required this.image,
-        required this.audioHandler
-      });
+      required this.audioHandler,
+      required this.url_lrc});
+
   int id;
-  String image, title, artist, url;
+  String image, title, artist, url, url_lrc;
   final AudioHandler audioHandler;
 
   @override
@@ -24,8 +25,14 @@ class Cardmusic extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ReplayPage(id:id,
-                    title: title, artist: artist, photo: image, file_url: url, audioHandler: audioHandler)));
+                builder: (context) => ReplayPage(
+                    id: id,
+                    url_lrc: url_lrc,
+                    title: title,
+                    artist: artist,
+                    photo: image,
+                    file_url: url,
+                    audioHandler: audioHandler)));
       },
       child: Card(
           elevation: 10,
@@ -34,7 +41,8 @@ class Cardmusic extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
           child: Container(
-            margin: const EdgeInsets.only(left: 15, right: 45, top: 12, bottom: 12),
+            margin:
+                const EdgeInsets.only(left: 15, right: 45, top: 12, bottom: 12),
             child: Row(children: [
               Container(
                   width: 70,
@@ -43,22 +51,18 @@ class Cardmusic extends StatelessWidget {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(50)),
                   child: Image.network(image, fit: BoxFit.cover)),
-                  Expanded(child: Container()),
+              Expanded(child: Container()),
               Column(children: [
                 Container(
-              constraints: BoxConstraints(maxWidth: 200),
-              child: Text(
-                title,
-                softWrap: true,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.caveat(
-                  color: Colors.white,
-                  fontSize: 27,
-                  fontWeight: FontWeight.w900
-                )
-              )
-            ),
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: Text(title,
+                        softWrap: true,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.caveat(
+                            color: Colors.white,
+                            fontSize: 27,
+                            fontWeight: FontWeight.w900))),
                 Text(artist,
                     style: GoogleFonts.caveat(
                         color: Colors.white,

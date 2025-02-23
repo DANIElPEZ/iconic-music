@@ -9,9 +9,11 @@ class Favorite extends StatefulWidget {
       required this.title,
       required this.artist,
       required this.photo,
-      required this.file_url});
+      required this.file_url,
+        required this.url_lrc
+      });
   final int id;
-  final String title, photo, file_url, artist;
+  final String title, photo, file_url, artist, url_lrc;
 
   @override
   State<StatefulWidget> createState() => _Favorite();
@@ -28,7 +30,8 @@ class _Favorite extends State<Favorite> {
           title: widget.title,
           artist: widget.artist,
           file_url: widget.file_url,
-          image_url: widget.photo);
+          image_url: widget.photo,
+      url_lrc: widget.url_lrc);
       return GestureDetector(
           onTap: () {
             if (music_provider.isAdded) {

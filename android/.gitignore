@@ -3,9 +3,9 @@
 /app/src/debug
 /app/src/main/java/io
 /app/src/profile
-/app/build.gradle
 gradle-wrapper.jar
 build.gradle
+gradle.properties
 /gradlew
 /gradlew.bat
 iconicmusic_android.iml

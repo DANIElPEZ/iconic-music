@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:iconicmusic/colors_and_shapes/colors.dart';
 
 class customNavShape extends CustomPainter {
+  customNavShape({required this.colors, required this.bgColor});
+  Color? bgColor;
+  List<Color>? colors;
+
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
@@ -9,7 +13,7 @@ class customNavShape extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint backgroundPaint = Paint()..color = colorsPalette[1];
+    final Paint backgroundPaint = Paint()..color = bgColor!;
     final Rect backgroundRect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.drawRect(backgroundRect, backgroundPaint);
 
@@ -40,7 +44,7 @@ class customNavShape extends CustomPainter {
     canvas.drawPath(path2, paint2);
 
     final gradient = LinearGradient(
-      colors: [colorsPalette[0], colorsPalette[3],colorsPalette[1], colorsPalette[3]],
+      colors: colors!,
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );

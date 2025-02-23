@@ -48,7 +48,6 @@ class ControlsState extends State<Controls> {
           isLoading = false;
           errorMessage=null;
         });
-
     }catch(e){
       handleError(e);
     }
