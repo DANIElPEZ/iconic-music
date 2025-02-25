@@ -39,7 +39,7 @@ class musicProvider extends ChangeNotifier {
       musics = List<Musicmodel>.from(
           response.map((music) => Musicmodel.fromJSON(music)));
     } catch (e) {
-      print('error$e');
+      print('error $e');
       musics = [];
     } finally {
       isLoading = false;
@@ -68,7 +68,7 @@ class musicProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e);
+      print('error: $e');
     }
   }
 

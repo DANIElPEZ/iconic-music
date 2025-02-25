@@ -60,7 +60,7 @@ class _ReplayPageState extends State<ReplayPage> {
   }
 
   void startLyrics() {
-    timer = Timer.periodic(Duration(microseconds: 350), (timer) {
+    timer = Timer.periodic(Duration(microseconds: 500), (timer) {
       if (isPlaying) {
         double currentPosition = position.inMilliseconds / 1000;
         int newIndex =
@@ -71,8 +71,7 @@ class _ReplayPageState extends State<ReplayPage> {
             currentLyricsIndex = newIndex;
           });
 
-          scrollController.animateTo(35.0 * newIndex + 1,
-              duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+          //scrollController.animateTo(35.0 * newIndex, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
         }
       }
     });

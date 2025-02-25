@@ -17,7 +17,7 @@ class DatabaseHelper {
   // Abre o crea la base de datos
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'MyMusics.db');
-    return await openDatabase(path, version: 1, onCreate: (db, version) {
+    return await openDatabase(path, version: 2, onCreate: (db, version) {
       db.execute(
           '''
       CREATE TABLE IF NOT EXISTS favorites_musics (
@@ -31,6 +31,11 @@ class DatabaseHelper {
     '''
       );
     },
+        onUpgrade: (db, oldVersion, newVersion){
+      if(oldVersion<2){
+        db.execute('ALTER TABLE favorites_musics ADD COLUMN url_lrc TEXT');
+      }
+        },
         onOpen: (db) {
           db.execute(
               '''
@@ -48,11 +53,11 @@ class DatabaseHelper {
   }
 
   // Inserta una nueva musica
-  Future<void> insertMusic(Map<String, dynamic> recipe) async {
+  Future<void> insertMusic(Map<String, dynamic> music) async {
     final db = await database;
     await db.insert(
       'favorites_musics',
-      recipe,
+      music,
       conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
