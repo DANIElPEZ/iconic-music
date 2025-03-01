@@ -7,5 +7,6 @@ test/
 .flutter-plugins-dependencies
 .metadata
 analysis_options.yaml
+devtools_options.yaml
 iconicmusic.iml
 pubspec.lock
