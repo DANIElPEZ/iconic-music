@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:iconicmusic/colors_and_shapes/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconicmusic/colors_and_shapes/appBarShape.dart';
 import 'package:iconicmusic/components/controls.dart';
 import 'package:iconicmusic/components/favorite_button.dart';
-import 'package:iconicmusic/services/audio_handler.dart';
 import 'package:iconicmusic/services/convert_lrc.dart';
 import 'package:provider/provider.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
@@ -37,11 +35,13 @@ class _ReplayPageState extends State<ReplayPage> {
   Duration position = Duration.zero;
   bool isPlaying = false;
   final ScrollController scrollController = ScrollController();
+  double containerHeight = 0;
+  final double lineHeightEstimate = 35.0;
 
   @override
   void initState() {
-    initializeLyrics();
     super.initState();
+    initializeLyrics();
   }
 
   Future<void> initializeLyrics() async {
@@ -71,7 +71,15 @@ class _ReplayPageState extends State<ReplayPage> {
             currentLyricsIndex = newIndex;
           });
 
-          //scrollController.animateTo(35.0 * newIndex, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+          if (containerHeight > 0) {
+            final maxScrollExtent =
+                (lyrics.length * lineHeightEstimate) - containerHeight;
+            double targetOffset = (newIndex * lineHeightEstimate) -
+                (containerHeight / 2 - lineHeightEstimate / 2);
+            targetOffset = targetOffset.clamp(0, maxScrollExtent);
+            scrollController.animateTo(targetOffset,
+                duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+          }
         }
       }
     });
@@ -170,25 +178,41 @@ class _ReplayPageState extends State<ReplayPage> {
                                       fit: BoxFit.cover)),
                               SizedBox(height: 15),
                               Flexible(
-                                child: ListView.builder(
-                                    controller: scrollController,
-                                    shrinkWrap: true,
-                                    itemCount: lyrics.length,
-                                    itemBuilder: (context, index) {
-                                      bool isCurrent =
-                                          index == currentLyricsIndex;
-                                      return AnimatedDefaultTextStyle(
-                                          child: Text(
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    // Actualizar containerHeight después de que el framework haya construido los widgets
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                      if (mounted && containerHeight != constraints.maxHeight) {
+                                        setState(() {
+                                          containerHeight = constraints.maxHeight;
+                                        });
+                                      }
+                                    });
+
+                                    return ListView.builder(
+                                      controller: scrollController,
+                                      itemCount: lyrics.length,
+                                      itemBuilder: (context, index) {
+                                        bool isCurrent = index == currentLyricsIndex;
+                                        return AnimatedDefaultTextStyle(
+                                          child: Container(
+                                            height: lineHeightEstimate, // Altura fija para cada línea
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              lyrics[index]['text'],
                                               textAlign: TextAlign.center,
-                                              lyrics[index]['text']),
+                                            ),
+                                          ),
                                           style: GoogleFonts.dekko(
-                                              fontSize: 23,
-                                              color: isCurrent
-                                                  ? Colors.white
-                                                  : Colors.grey[700]),
-                                          duration:
-                                              Duration(milliseconds: 300));
-                                    })
+                                            fontSize: 23,
+                                            color: isCurrent ? Colors.white : Colors.grey[700],
+                                          ),
+                                          duration: Duration(milliseconds: 300),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               )
                             ]))))),
             bottomNavigationBar: Container(
