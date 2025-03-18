@@ -167,7 +167,7 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
                             artist: filteredMusicList[index].artist,
                             url: filteredMusicList[index].file_url,
                             image: filteredMusicList[index].image_url,
-                            url_lrc: musics[index].url_lrc,
+                            url_lrc: filteredMusicList[index].url_lrc,
                             audioHandler: widget.audioHandler);
                       }),
                   Positioned(
