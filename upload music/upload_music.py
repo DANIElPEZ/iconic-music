@@ -24,10 +24,10 @@ def upload_mp3_to_supabase(file_path, title, artist, image_url, url_lrc):
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-
+    
     upload_mp3_to_supabase(
-        file_path='.mp3',
-        title='',
+        file_path='.mp3', 
+        title='', 
         artist='',
         image_url='',
         url_lrc='https://osroaycdopetvxchekvx.supabase.co/storage/v1/object/public/musics/lyrics/empty.lrc'
