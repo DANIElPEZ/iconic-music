@@ -1,6 +1,9 @@
 /.gradle
 /.kotlin
-app/src
+app/src/debug
+app/src/profile
+app/src/main/java
+app/src/main/kotlin
 gradle/
 settings.gradle.kts
 *.properties
