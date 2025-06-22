@@ -1,0 +1,11 @@
+/.gradle
+/.kotlin
+app/src
+gradle/
+settings.gradle.kts
+*.properties
+gradlew
+*.bat
+*.iml
+*.properties
+*.jks

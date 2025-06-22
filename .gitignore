@@ -1,0 +1,13 @@
+.dart_tool/
+.idea/
+build/
+android/build.gradle.kts
+test/
+.env
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+analysis_options.yaml
+devtools_options.yaml
+iconicmusic.iml
+pubspec.lock
