@@ -162,6 +162,7 @@ class audioHandler extends BaseAudioHandler {
           processingState: AudioProcessingState.idle,
           playing: false));
       await super.stop();
+      await AudioService.stop();
     }catch(e){
       print('Error stopping player: $e');
     }
@@ -187,5 +188,10 @@ class audioHandler extends BaseAudioHandler {
       await previous();
       super.skipToPrevious();
     }
+  }
+
+  @override
+  Future<void> onTaskRemoved() async {
+    await stop();
   }
 }

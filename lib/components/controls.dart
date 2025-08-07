@@ -61,11 +61,6 @@ class ControlsState extends State<Controls> {
     print('Audio error: $error');
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   String formatTime(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
