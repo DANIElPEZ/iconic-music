@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:iconicmusic/services/audio_handler.dart';
+import 'package:iconicmusic/utils/audio_handler.dart';
 
 class Controls extends StatefulWidget {
   Controls({required this.file_url, required this.artist, required this.title, required this.audioHandler, required this.image_url});

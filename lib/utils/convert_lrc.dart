@@ -27,5 +27,5 @@ Future<List<Map<String, dynamic>>> parseLRC(String lrcText) async {
       lyrics.add({"time": time, "text": text});
     }
   }
-  return lyrics;
+  return lyrics ?? [{}];
 }

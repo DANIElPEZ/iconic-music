@@ -3,7 +3,7 @@ import 'package:iconicmusic/models/musicModel.dart';
 import 'package:provider/provider.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
 import 'package:iconicmusic/components/cardMusic.dart';
-import 'package:iconicmusic/colors_and_shapes/colors.dart';
+import 'package:iconicmusic/theme/colors.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audio_service/audio_service.dart';

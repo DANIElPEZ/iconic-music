@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iconicmusic/colors_and_shapes/colors.dart';
-import 'package:iconicmusic/colors_and_shapes/appBarShape.dart';
+import 'package:iconicmusic/theme/colors.dart';
+import 'package:iconicmusic/theme/shapes/app_bar_shape.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconicmusic/colors_and_shapes/navColor.dart';
+import 'package:iconicmusic/theme/shapes/bottom_nav_shape.dart';
 import 'package:iconicmusic/views/music.dart';
 import 'package:iconicmusic/views/favorite.dart';
 import 'package:audio_service/audio_service.dart';
@@ -24,7 +24,7 @@ class _HomePage extends State<HomePage> {
 
   void loadRewardedAd() {
     RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+      adUnitId: 'ca-app-pub-6288821932043902/7193835014',
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad){

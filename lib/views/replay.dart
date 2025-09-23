@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:iconicmusic/colors_and_shapes/colors.dart';
+import 'package:iconicmusic/theme/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconicmusic/colors_and_shapes/appBarShape.dart';
+import 'package:iconicmusic/theme/shapes/app_bar_shape.dart';
 import 'package:iconicmusic/components/controls.dart';
 import 'package:iconicmusic/components/favorite_button.dart';
-import 'package:iconicmusic/services/convert_lrc.dart';
+import 'package:iconicmusic/utils/convert_lrc.dart';
 import 'package:provider/provider.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
 import 'package:audio_service/audio_service.dart';

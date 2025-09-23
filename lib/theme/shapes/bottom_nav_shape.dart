@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconicmusic/colors_and_shapes/colors.dart';
+import 'package:iconicmusic/theme/colors.dart';
 
 class customNavShape extends CustomPainter {
   customNavShape({required this.colors, required this.bgColor});

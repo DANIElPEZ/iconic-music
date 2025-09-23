@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:iconicmusic/provider/musicProvider.dart';
-import 'package:iconicmusic/services/audio_service_initializer.dart';
+import 'package:iconicmusic/utils/audio_service_initializer.dart';
 import 'package:iconicmusic/views/Home.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -55,14 +55,16 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: HomePage(audioHandler: widget.audioHandler),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            useMaterial3: true,
-            navigationBarTheme: NavigationBarThemeData(
-                labelTextStyle: WidgetStateProperty.resolveWith((states) =>
-                    const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)))));
+    return SafeArea(
+      child: MaterialApp(
+          home: HomePage(audioHandler: widget.audioHandler),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              useMaterial3: true,
+              navigationBarTheme: NavigationBarThemeData(
+                  labelTextStyle: WidgetStateProperty.resolveWith((states) =>
+                      const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold))))),
+    );
   }
 }

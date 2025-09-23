@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconicmusic/views/replay.dart';
-import 'package:iconicmusic/colors_and_shapes/colors.dart';
+import 'package:iconicmusic/theme/colors.dart';
 import 'package:audio_service/audio_service.dart';
 
 class Cardmusic extends StatelessWidget {
