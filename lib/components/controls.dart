@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:iconicmusic/utils/audio_handler.dart';
+import 'package:iconicmusic/services/audio_handler.dart';
 
 class Controls extends StatefulWidget {
   Controls({required this.file_url, required this.artist, required this.title, required this.audioHandler, required this.image_url});
@@ -17,6 +18,8 @@ class ControlsState extends State<Controls> {
   Duration position = Duration.zero;
   bool isLoading = true;
   String? errorMessage;
+  StreamSubscription? mediaItemSub;
+  StreamSubscription? playbackStateSub;
 
   @override
   void initState() {
@@ -28,7 +31,7 @@ class ControlsState extends State<Controls> {
     try {
       await (widget.audioHandler as audioHandler).playSingleTrack(widget.file_url, widget.title, widget.artist, widget.image_url);
 
-      widget.audioHandler.mediaItem.listen((mediaItem) {
+      mediaItemSub=widget.audioHandler.mediaItem.listen((mediaItem) {
           setState(() {
             duration = mediaItem?.duration ?? Duration.zero;
           });
@@ -36,7 +39,7 @@ class ControlsState extends State<Controls> {
         onError: handleError
       );
 
-      widget.audioHandler.playbackState.listen((state) {
+      playbackStateSub=widget.audioHandler.playbackState.listen((state) {
           setState(() {
             position = state.position;
             isLoading = state.processingState == AudioProcessingState.loading;
@@ -76,6 +79,13 @@ class ControlsState extends State<Controls> {
     } else {
       await widget.audioHandler.seek(Duration(seconds: newPosition));
     }
+  }
+
+  @override
+  void dispose() {
+    mediaItemSub?.cancel();
+    playbackStateSub?.cancel();
+    super.dispose();
   }
 
   @override

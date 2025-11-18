@@ -29,7 +29,6 @@ class audioHandler extends BaseAudioHandler {
         artUri: Uri.parse(image_url),
         duration: audioPlayer.duration,
       ));
-      play();
     } catch (e) {
       print('Error initializing player: $e');
     }

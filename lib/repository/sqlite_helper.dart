@@ -16,52 +16,27 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'MyMusics.db');
     return await openDatabase(path, version: 3, onCreate: (db, version) async {
       await db.execute('''
-          CREATE TABLE download_musics (
-            id INTEGER PRIMARY KEY,
-            file_music BLOB,
-            file_lrc BLOB,
-            file_image INT,
-          )
-        ''');
-      await db.execute('''
       CREATE TABLE IF NOT EXISTS favorites_musics (
         id INTEGER PRIMARY KEY,
         title TEXT,
         artist TEXT,
         url_file TEXT,
         url_image TEXT,
-        url_lrc TEXT
+        url_lrc TEXT,
+        local_music TEXT,
+        local_lrc TEXT,
+        local_image TEXT,
+        is_downloaded INT
       )
     ''');
-    }, onUpgrade: (db, oldVersion, newVersion) async {
-      if (oldVersion < 3) {
-        await db.execute("DROP TABLE IF EXISTS favorites_musics");
-        await db.execute("DROP TABLE IF EXISTS download_musics");
-        await db.execute('''
-          CREATE TABLE download_musics (
-            id INTEGER PRIMARY KEY,
-            file_music BLOB,
-            file_lrc BLOB,
-            file_image INT,
-          )
-        ''');
-        await db.execute('''
-      CREATE TABLE IF NOT EXISTS favorites_musics (
-        id INTEGER PRIMARY KEY,
-        title TEXT,
-        artist TEXT,
-        url_file TEXT,
-        url_image TEXT,
-        url_lrc TEXT
-      )
-    ''');
-      }
     });
   }
 
-  Future<void> saveDownloadMusic(Map<String, dynamic> music)async{
+  Future<void> saveDownloadMusic(Map<String, dynamic> music, int id)async{
     final db = await database;
-    await db.insert('download_musics', music,
+    await db.update('favorites_musics', music,
+        where: 'id = ?',
+        whereArgs: [id],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -71,38 +46,37 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Map<String, dynamic>>> getDownloadMusicByid(int id) async {
+  Future<Map<String, Object?>?> getDownloadMusicByid(int id) async {
     final db = await database;
-    return await db.query(
-      'download_musics',
+    final result= await db.query(
+      'favorites_musics',
       where: 'id = ?',
+      columns: ['local_music','local_lrc','local_image', 'is_downloaded'],
       whereArgs: [id],
     );
+    return result.isNotEmpty?result.first:null;
   }
 
   Future<List<Map<String, dynamic>>> getMusics() async {
     final db = await database;
-    return await db.query('favorites_musics');
+    final result=await db.query('favorites_musics');
+    return result.isNotEmpty?result:[];
   }
 
-  Future<List<Map<String, dynamic>>> getLikedById(int id) async {
+  Future<bool> getLikedById(int id) async {
     final db = await database;
-    return await db.query(
+    final result= await db.query(
       'favorites_musics',
       where: 'id = ?',
       whereArgs: [id],
     );
+    return result.isNotEmpty?true:false;
   }
 
   Future<void> deleteMusic(int id) async {
     final db = await database;
     await db.delete(
       'favorites_musics',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    await db.delete(
-      'download_musics',
       where: 'id = ?',
       whereArgs: [id],
     );

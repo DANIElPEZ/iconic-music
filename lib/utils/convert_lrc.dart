@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 
 Future<List<Map<String, dynamic>>> fetchAndParseLRC(String url)async{
@@ -27,5 +29,16 @@ Future<List<Map<String, dynamic>>> parseLRC(String lrcText) async {
       lyrics.add({"time": time, "text": text});
     }
   }
-  return lyrics ?? [{}];
+  return lyrics;
+}
+
+Future<List<Map<String, dynamic>>> parseLocalLRC(String filePath) async {
+  try {
+    final file = File(filePath);
+    final lrcText = await file.readAsString();
+    return await parseLRC(lrcText);
+  } catch (e) {
+    print("Error leyendo LRC local: $e");
+    return [];
+  }
 }
