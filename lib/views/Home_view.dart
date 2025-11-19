@@ -6,8 +6,9 @@ import 'package:iconicmusic/theme/colors.dart';
 import 'package:iconicmusic/theme/shapes/app_bar_shape.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconicmusic/theme/shapes/bottom_nav_shape.dart';
-import 'package:iconicmusic/views/music.dart';
-import 'package:iconicmusic/views/favorite.dart';
+import 'package:iconicmusic/views/main_views/music_view.dart';
+import 'package:iconicmusic/views/main_views/favorite_view.dart';
+import 'package:iconicmusic/views/secondary_views/search_view.dart';
 import 'package:iconicmusic/utils/ad_utils.dart';
 import 'package:iconicmusic/services/audio_service_initializer.dart';
 import 'package:iconicmusic/blocs/music/music_bloc.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  int currentIndex = 0;
+  int currentIndex = 1;
   final ad_helper = adUtils();
   AudioHandler? audioHandler;
   late PageController pageController;
@@ -296,6 +297,9 @@ class _HomePage extends State<HomePage> {
                     indicatorColor: colorsPalette[3],
                     destinations: const [
                       NavigationDestination(
+                          icon: Icon(Icons.search, color: Colors.white),
+                          label: 'Search'),
+                      NavigationDestination(
                           icon: Icon(Icons.home, color: Colors.white),
                           label: 'Home'),
                       NavigationDestination(
@@ -308,6 +312,7 @@ class _HomePage extends State<HomePage> {
             setState(() =>  currentIndex = index);
           },
             children: [
+              Seacrh(audioHandler: audioHandler!),
               Music(audioHandler: audioHandler!),
               Favorite(audioHandler: audioHandler!)
             ],

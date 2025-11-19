@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconicmusic/components/cardMusic.dart';
+import 'package:iconicmusic/components/card_music.dart';
 import 'package:iconicmusic/theme/colors.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +17,6 @@ class Music extends StatefulWidget {
 }
 
 class _Music extends State<Music> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
   List<dynamic> filteredMusicList=[];
   final TextEditingController searchController=TextEditingController();
 
@@ -33,21 +31,6 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
     await Future.delayed(Duration(microseconds: 800));
     filteredMusicList=myMusics;
     searchController.addListener(filterMusicList);
-
-    _controller = AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: 1000)
-    )..repeat(reverse: true);
-
-    _colorAnimation = ColorTween(
-      begin: colorsPalette[4],
-      end: colorsPalette[1],
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
   }
 
   void filterMusicList() {
@@ -126,67 +109,66 @@ class _Music extends State<Music> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: colorsPalette[1],
-            child :BlocBuilder<musicBloc, musicState>(builder: (context, state) {
-              if (!state.loading && filteredMusicList.isEmpty && state.musics.isNotEmpty) {
-                filteredMusicList = state.musics;
-              }
-              if (state.loading) {
-                return Center(
-                    child:
-                    SpinKitThreeBounce(color: colorsPalette[2], size: 33));
-              }else if(state.musics.isNotEmpty){
-                return Stack( children: [
-                  searchController.text.isEmpty?
-                  ListView.builder(
-                      itemCount: state.musics.length,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index){
-                        return Cardmusic(
-                            id: state.musics[index]['id'],
-                            title: state.musics[index]['title'],
-                            artist: state.musics[index]['artist'],
-                            url_file: state.musics[index]['file_url'],
-                            url_image: state.musics[index]['image_url'],
-                            url_lrc: state.musics[index]['url_lrc'],
-                            audioHandler: widget.audioHandler);
-                      }):
-                  ListView.builder(
-                      itemCount: filteredMusicList.length,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Cardmusic(
-                            id: filteredMusicList[index]['id'],
-                            title: filteredMusicList[index]['title'],
-                            artist: filteredMusicList[index]['artist'],
-                            url_file: filteredMusicList[index]['file_url'],
-                            url_image: filteredMusicList[index]['image_url'],
-                            url_lrc: filteredMusicList[index]['url_lrc'],
-                            audioHandler: widget.audioHandler);
-                      }),
-                  Positioned(
-                      bottom: 16,
-                      right: 16,
-                      child: FloatingActionButton(
-                          onPressed: (){
-                            findMusic(context);
-                          },
-                          backgroundColor: colorsPalette[4],
-                          child: Icon(Icons.search,
-                              color: Colors.white, size: 32)))
-                ]);
-              }else{
-                return Center(
-                    child: Text(
-                        'Please, check the internet connection',
-                        style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 20)
-                    ));
-              }
-            })
-    ));
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: colorsPalette[1],
+        child :BlocBuilder<musicBloc, musicState>(builder: (context, state) {
+          if (!state.loading && filteredMusicList.isEmpty && state.musics.isNotEmpty) {
+            filteredMusicList = state.musics;
+          }
+          if (state.loading) {
+            return Center(
+                child:
+                SpinKitThreeBounce(color: colorsPalette[2], size: 33));
+          }else if(state.musics.isNotEmpty){
+            return Stack( children: [
+              searchController.text.isEmpty?
+              ListView.builder(
+                  itemCount: state.musics.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index){
+                    return Cardmusic(
+                        id: state.musics[index]['id'],
+                        title: state.musics[index]['title'],
+                        artist: state.musics[index]['artist'],
+                        url_file: state.musics[index]['file_url'],
+                        url_image: state.musics[index]['image_url'],
+                        url_lrc: state.musics[index]['url_lrc'],
+                        audioHandler: widget.audioHandler);
+                  }):
+              ListView.builder(
+                  itemCount: filteredMusicList.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Cardmusic(
+                        id: filteredMusicList[index]['id'],
+                        title: filteredMusicList[index]['title'],
+                        artist: filteredMusicList[index]['artist'],
+                        url_file: filteredMusicList[index]['file_url'],
+                        url_image: filteredMusicList[index]['image_url'],
+                        url_lrc: filteredMusicList[index]['url_lrc'],
+                        audioHandler: widget.audioHandler);
+                  }),
+              Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: FloatingActionButton(
+                      onPressed: (){
+                        findMusic(context);
+                      },
+                      backgroundColor: colorsPalette[4],
+                      child: Icon(Icons.search,
+                          color: Colors.white, size: 32)))
+            ]);
+          }else{
+            return Center(
+                child: Text(
+                    'Please, check the internet connection',
+                    style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 20)
+                ));
+          }
+        })
+        );
   }
 }

@@ -10,13 +10,15 @@ class musicState {
       required this.artist,
       required this.url_file,
       required this.url_image,
-      required this.url_lrc});
+      required this.url_lrc,
+      required this.showad});
 
   final List musics;
   final List favoriteMusics;
   final bool isLiked;
   final bool isDownloaded;
   final bool loading;
+  final int showad;
 
   //replay view
   final int id;
@@ -33,6 +35,7 @@ class musicState {
         isLiked: false,
         isDownloaded: false,
         loading: true,
+        showad: 0,
         id: 0,
         url_image: '',
         url_lrc: '',
@@ -47,6 +50,7 @@ class musicState {
       bool? isLiked,
       bool? isDownloaded,
       bool? loading,
+      int? showad,
       int? id,
       String? title,
       String? artist,
@@ -59,6 +63,7 @@ class musicState {
         isLiked: isLiked ?? this.isLiked,
         isDownloaded: isDownloaded ?? this.isDownloaded,
         loading: loading ?? this.loading,
+        showad: showad ?? this.showad,
         id: id ?? this.id,
         artist: artist ?? this.artist,
         title: title ?? this.title,

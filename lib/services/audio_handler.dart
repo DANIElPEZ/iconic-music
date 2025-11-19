@@ -86,6 +86,7 @@ class audioHandler extends BaseAudioHandler {
 
   void listenToPlayerState() {
     audioPlayer.playerStateStream.listen((playerState) {
+
       final playing = playerState.playing;
       final processingState = mapProcessingState(playerState.processingState);
 
@@ -155,7 +156,6 @@ class audioHandler extends BaseAudioHandler {
   Future<void> stop() async {
     try {
       await audioPlayer.stop();
-
       playbackState.add(playbackState.value.copyWith(
           controls: [],
           processingState: AudioProcessingState.idle,
@@ -191,6 +191,16 @@ class audioHandler extends BaseAudioHandler {
 
   @override
   Future<void> onTaskRemoved() async {
-    await stop();
+    playbackState.add(playbackState.value.copyWith(
+      processingState: AudioProcessingState.idle,
+      playing: false,
+      controls: [],
+    ));
+    try {
+      await audioPlayer.stop();
+      await AudioService.stop();
+    } catch (e) {
+    }
+    return super.onTaskRemoved();
   }
 }

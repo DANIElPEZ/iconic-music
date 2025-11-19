@@ -39,10 +39,14 @@ class _ReplayPageState extends State<ReplayPage> {
   void initState() {
     super.initState();
     initializeLyrics();
-    ad_helper.loadRewardedAd(onReady: (){
-      if (ad_helper.isAdLoaded && !ad_helper.initialAdShown){
-        ad_helper.showRewardedAd(context);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final showAd = context.read<musicBloc>().state.showad;
+
+      ad_helper.loadRewardedAd(onReady: () {
+        if (ad_helper.isAdLoaded && !ad_helper.initialAdShown && showAd == 2) {
+          ad_helper.showRewardedAd(context);
+        }
+      });
     });
   }
 

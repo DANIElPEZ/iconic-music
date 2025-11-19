@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:iconicmusic/views/Home.dart';
+import 'package:iconicmusic/views/Home_view.dart';
 import 'package:iconicmusic/repository/music_repository.dart';
 import 'package:iconicmusic/blocs/music/music_bloc.dart';
+import 'package:iconicmusic/repository/search_repository.dart';
+import 'package:iconicmusic/blocs/search/search_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,14 +33,20 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<MusicRepository>(
-            create: (context) => MusicRepository())
+            create: (context) => MusicRepository()),
+        RepositoryProvider<SearchRepository>(
+            create: (context) => SearchRepository())
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<musicBloc>(
               create: (context) => musicBloc(
                   musicRepository:
-                      RepositoryProvider.of<MusicRepository>(context)))
+                      RepositoryProvider.of<MusicRepository>(context))),
+          BlocProvider<SearchBloc>(
+              create: (context) => SearchBloc(
+                  searchRepository:
+                  RepositoryProvider.of<SearchRepository>(context)))
         ],
         child: Builder(builder: (context) {
           return SafeArea(

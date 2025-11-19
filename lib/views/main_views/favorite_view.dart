@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconicmusic/theme/colors.dart';
-import 'package:iconicmusic/components/cardMusic.dart';
+import 'package:iconicmusic/components/card_music.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audio_service/audio_service.dart';

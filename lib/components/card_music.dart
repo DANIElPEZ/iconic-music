@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconicmusic/views/replay.dart';
+import 'package:iconicmusic/views/main_views/replay_view.dart';
 import 'package:iconicmusic/theme/colors.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:iconicmusic/blocs/music/music_bloc.dart';

@@ -18,13 +18,18 @@ class musicBloc extends Bloc<musicEvent, musicState> {
       emit(state.copyWith(favoriteMusics: favoriteMusic, loading: false));
     });
     on<LoadMusic>((event, emit) async {
+      int count=state.showad+1;
+      if(count>2) {
+        count=0;
+      }
       emit(state.copyWith(
           id: event.id,
           title: event.title,
           artist: event.artist,
           url_lrc: event.url_lrc,
           url_image: event.url_image,
-          url_file: event.url_file));
+          url_file: event.url_file,
+          showad: count));
     });
     on<AddFavorite>((event, emit) async {
       final music = {
