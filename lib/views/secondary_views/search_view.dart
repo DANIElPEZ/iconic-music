@@ -90,6 +90,28 @@ class _SeacrhState extends State<Seacrh> {
         ));
   }
 
+  Widget buildMessage(String text){
+    return Stack(
+      children: [
+        Center(
+          child: Text(
+            text,
+            style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 20),
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: () => findMusic(context),
+            backgroundColor: colorsPalette[4],
+            child: Icon(Icons.search, color: Colors.white, size: 32),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -97,12 +119,11 @@ class _SeacrhState extends State<Seacrh> {
         height: MediaQuery.of(context).size.height,
         color: colorsPalette[1],
         child :BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
-          if (state.loading) {
-            return Center(
-                child:
-                SpinKitThreeBounce(color: colorsPalette[2], size: 33));
-          }else if(state.data!.isNotEmpty){
-            return Stack( children: [
+          if (state.loading) return Center(child: SpinKitThreeBounce(color: colorsPalette[2], size: 33));
+          if (state.searchExecuted && state.data!.isEmpty) return buildMessage('No results found');
+          if (!state.searchExecuted) return buildMessage('Search your music');
+
+          return Stack( children: [
                             ListView.builder(
                   itemCount: state.data!.length,
                   physics: BouncingScrollPhysics(),
@@ -125,47 +146,6 @@ class _SeacrhState extends State<Seacrh> {
                       child: Icon(Icons.search,
                           color: Colors.white, size: 32)))
             ]);
-          }else if(state.data!.isEmpty){
-            return Stack(
-              children: [
-                Center(
-                    child: Text(
-                        'Please, check the internet connection',
-                        style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 20)
-                    )),
-                Positioned(
-                    bottom: 16,
-                    right: 16,
-                    child: FloatingActionButton(
-                        onPressed: (){
-                          findMusic(context);
-                        },
-                        backgroundColor: colorsPalette[4],
-                        child: Icon(Icons.search,
-                            color: Colors.white, size: 32)))
-              ],
-            );
-          }else{
-            return Stack(
-              children: [
-                Center(
-                    child: Text(
-                        'Search, your music',
-                        style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 20)
-                    )),
-                Positioned(
-                    bottom: 16,
-                    right: 16,
-                    child: FloatingActionButton(
-                        onPressed: (){
-                          findMusic(context);
-                        },
-                        backgroundColor: colorsPalette[4],
-                        child: Icon(Icons.search,
-                            color: Colors.white, size: 32)))
-              ],
-            );
-          }
         })
     );
   }

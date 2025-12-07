@@ -12,11 +12,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
     on<loadSearch>((event, emit) async {
       try {
-        emit(state.copyWith(loading: true));
+        emit(state.copyWith(loading: true, searchExecuted: true));
         final data = await searchRepository.search(state.query);
         emit(state.copyWith(data: data,loading: false));
       }catch(e){
         print(e);
+        emit(state.copyWith(loading: false));
       }
     });
   }
