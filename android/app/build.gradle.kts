@@ -31,7 +31,7 @@ android {
         applicationId = "com.dnv.dev.iconicmusic"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
-        versionCode = 10
+        versionCode = 11
         versionName = flutter.versionName
     }
 

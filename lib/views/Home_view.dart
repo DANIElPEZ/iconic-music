@@ -9,6 +9,7 @@ import 'package:iconicmusic/theme/shapes/bottom_nav_shape.dart';
 import 'package:iconicmusic/views/main_views/music_view.dart';
 import 'package:iconicmusic/views/main_views/favorite_view.dart';
 import 'package:iconicmusic/views/secondary_views/search_view.dart';
+import 'package:iconicmusic/views/secondary_views/policies.dart';
 import 'package:iconicmusic/utils/ad_utils.dart';
 import 'package:iconicmusic/services/audio_service_initializer.dart';
 import 'package:iconicmusic/blocs/music/music_bloc.dart';
@@ -95,6 +96,73 @@ class _HomePage extends State<HomePage> {
     }
   }
 
+  Future<void> info(BuildContext context)async{
+    return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+              title: Text('Iconic Music',
+                  style: GoogleFonts.playfairDisplay(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900)),
+              icon:  Container(
+                  width: 70,
+                  height: 70,
+                  clipBehavior: Clip.antiAlias,
+                  decoration:
+                  BoxDecoration(shape: BoxShape.circle),
+                  child:
+                  Image.asset('assets/icon.png', width: 60, height: 60)),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PoliciesView()));
+                    },
+                    child: Text('Policies',
+                        style:
+                        GoogleFonts.playfairDisplay(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight:
+                            FontWeight.w600)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        colorsPalette[4])),
+                SizedBox(width: 40),
+                ElevatedButton(
+                    onPressed: () {
+                      if (ad_helper.isAdLoaded &&
+                          !ad_helper.initialAdShown) {
+                        ad_helper.showRewardedAd(context);
+                      }
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close',
+                        style:
+                        GoogleFonts.playfairDisplay(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight:
+                            FontWeight.w600)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        colorsPalette[4]))
+              ],
+              content: Text(
+                  'iconic music is an application to listen to master music, eg: AC/DC, Qeen, etc.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.playfairDisplay(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600)),
+              backgroundColor: colorsPalette[1]
+          ));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (audioHandler == null) {
@@ -127,47 +195,8 @@ class _HomePage extends State<HomePage> {
                           },
                           icon: Icon(Icons.update, color: Colors.white)),
                       IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) => AlertDialog(
-                                    title: Text('Iconic Music',
-                                        style: GoogleFonts.playfairDisplay(
-                                            color: Colors.white,
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w900)),
-                                    icon: Image.asset('assets/icon.png',
-                                        width: 50, height: 50),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            if (ad_helper.isAdLoaded &&
-                                                !ad_helper.initialAdShown) {
-                                              ad_helper.showRewardedAd(context);
-                                            }
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('Close',
-                                              style:
-                                                  GoogleFonts.playfairDisplay(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  colorsPalette[4]))
-                                    ],
-                                    content: Text(
-                                        'iconic music is an application to listen to master music, eg: AC/DC, Michael Jackson, Qeen, etc.',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.playfairDisplay(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600)),
-                                    backgroundColor: colorsPalette[1]
-                                  ));
+                        onPressed: (){
+                          info(context);
                         },
                         icon: const Icon(Icons.info, color: Colors.white),
                       ),
@@ -231,44 +260,8 @@ class _HomePage extends State<HomePage> {
                         },
                         icon: Icon(Icons.update, color: Colors.white)),
                     IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => AlertDialog(
-                                  title: Text('Iconic Music',
-                                      style: GoogleFonts.playfairDisplay(
-                                          color: Colors.white,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w900)),
-                                  icon: Image.asset('assets/icon.png',
-                                      width: 50, height: 50),
-                                  actions: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          if (ad_helper.isAdLoaded &&
-                                              !ad_helper.initialAdShown) {
-                                            ad_helper.showRewardedAd(context);
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Close',
-                                            style: GoogleFonts.playfairDisplay(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600)),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsPalette[4]))
-                                  ],
-                                  content: Text(
-                                      'iconic music is an application to listen to master music, eg: AC/DC, Michael Jackson, Qeen, etc.',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.playfairDisplay(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600)),
-                                  backgroundColor: colorsPalette[1],
-                                ));
+                      onPressed: (){
+                        info(context);
                       },
                       icon: const Icon(Icons.info, color: Colors.white),
                     ),
