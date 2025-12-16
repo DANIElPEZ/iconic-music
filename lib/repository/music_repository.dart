@@ -42,7 +42,6 @@ class MusicRepository {
       'url_image': result['local_image'],
       'url_file': result['local_music'],
       'url_lrc': result['local_lrc'],
-
     };
   }
 }

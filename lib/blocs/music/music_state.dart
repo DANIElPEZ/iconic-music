@@ -11,7 +11,9 @@ class musicState {
       required this.url_file,
       required this.url_image,
       required this.url_lrc,
-      required this.showad});
+      required this.showad,
+      required this.downloading,
+      required this.downloadProgress});
 
   final List musics;
   final List favoriteMusics;
@@ -19,6 +21,8 @@ class musicState {
   final bool isDownloaded;
   final bool loading;
   final int showad;
+  final bool downloading;
+  final double downloadProgress;
 
   //replay view
   final int id;
@@ -35,6 +39,8 @@ class musicState {
         isLiked: false,
         isDownloaded: false,
         loading: true,
+        downloading: false,
+        downloadProgress: 0.0,
         showad: 0,
         id: 0,
         url_image: '',
@@ -50,6 +56,8 @@ class musicState {
       bool? isLiked,
       bool? isDownloaded,
       bool? loading,
+      bool? downloading,
+      double? downloadProgress,
       int? showad,
       int? id,
       String? title,
@@ -63,6 +71,8 @@ class musicState {
         isLiked: isLiked ?? this.isLiked,
         isDownloaded: isDownloaded ?? this.isDownloaded,
         loading: loading ?? this.loading,
+        downloading: downloading ?? this.downloading,
+        downloadProgress: downloadProgress ?? this.downloadProgress,
         showad: showad ?? this.showad,
         id: id ?? this.id,
         artist: artist ?? this.artist,

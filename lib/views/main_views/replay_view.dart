@@ -188,20 +188,20 @@ class _ReplayPageState extends State<ReplayPage> {
                                 clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20)),
-                                child: state.isDownloaded
-                                    ? Image.file(File(state.url_image),
-                                        fit: BoxFit.cover)
-                                    : Image.network(state.url_image,
-                                        fit: BoxFit.cover, errorBuilder:
-                                            (context, error, stackTrace) {
-                                        return Image.asset('assets/icon.png',
-                                            fit: BoxFit.cover);
-                                      })),
+                                child: Image.network(state.url_image,
+                                    fit: BoxFit.cover, errorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.file(File(state.url_image),
+                                          fit: BoxFit.cover, errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset('assets/icon.png',
+                                                fit: BoxFit.cover);
+                                          });
+                                    })),
                             SizedBox(height: 15),
                             Flexible(
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
-                                  // Actualizar containerHeight después de que el framework haya construido los widgets
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) {
                                     if (mounted &&

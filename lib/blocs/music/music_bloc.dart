@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:iconicmusic/repository/music_repository.dart';
 import 'package:iconicmusic/blocs/music/music_state.dart';
 import 'package:iconicmusic/blocs/music/music_event.dart';
@@ -50,12 +52,43 @@ class musicBloc extends Bloc<musicEvent, musicState> {
       emit(state.copyWith(isLiked: false, favoriteMusics: favorites));
     });
     on<DownloadMusic>((event, emit) async {
-      final musicFiles = {
-        'url_file': state.url_file,
-        'url_image': state.url_image,
-        'url_lrc': state.url_lrc
-      };
-      musicRepository.insertDownloadMusic(state.id, musicFiles);
+      try {
+        emit(state.copyWith(
+          downloading: true
+        ));
+
+        final dio = Dio();
+        final dir = await getApplicationDocumentsDirectory();
+        final savePath = '${dir.path}/${state.id}.mp3';
+
+        await dio.download(
+          state.url_file,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total > 0) {
+              emit(state.copyWith(
+                downloadProgress: received / total,
+              ));
+            }
+          },
+        );
+
+        final musicFiles = {
+          'url_file': state.url_file,
+          'url_image': state.url_image,
+          'url_lrc': state.url_lrc,
+        };
+
+        await musicRepository.insertDownloadMusic(state.id, musicFiles);
+
+        emit(state.copyWith(
+          downloading: false,
+          isDownloaded: true
+        ));
+
+      } catch (e) {
+        emit(state.copyWith(downloading: false));
+      }
     });
     on<LikedMusic>((event, emit) async {
       final result = await musicRepository.getLikedMusic(state.id);

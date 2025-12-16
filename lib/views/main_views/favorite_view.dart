@@ -22,7 +22,6 @@ class _Favoritemusic extends State<Favorite> {
   Future<void> playPlaylist() async {
     try {
       final myMusics = context.read<musicBloc>().state.favoriteMusics;
-      Future.delayed(Duration(milliseconds: 100));
       if (myMusics.isEmpty) return;
       List<MediaItem> playListMusics =
           myMusics.map((music) => convertToMediaItem(music)).toList();
@@ -34,10 +33,10 @@ class _Favoritemusic extends State<Favorite> {
 
   MediaItem convertToMediaItem(Map<String, dynamic> music) {
     return MediaItem(
-        id: music['file_url'] ?? '',
+        id: music['url_file'] ?? '',
         title: music['title'] ?? 'Sin título',
         artUri:
-            music['image_url'] != null ? Uri.parse(music['image_url']) : null);
+            music['url_image'] != null ? Uri.parse(music['url_image']) : null);
   }
 
   @override
