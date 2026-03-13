@@ -13,10 +13,7 @@
   <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white">
 </div>
 
-## 🚀 Availability  
-Currently in development and expanding with new features. Future updates will include:  
-- 📂 YouTube API integration
-- 🌐 Offline player
+## 🚀 Availability to download
 - 👉 [Download on Google Play](https://play.google.com/store/apps/details?id=com.dnv.dev.iconicmusic)  
 
 ## 📸 Screenshots  
@@ -26,7 +23,6 @@ Currently in development and expanding with new features. Future updates will in
 </div>
 
 ## 📌 Project Status  
-✅ Initial version live with basic features (streaming + favorites).  
-🚧 More updates coming soon.  
+✅ Published and maintained.
 
 ---
