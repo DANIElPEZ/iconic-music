@@ -1,13 +1,38 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:postgres/postgres.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:iconicmusic/repository/sqlite_helper.dart';
 import 'package:iconicmusic/utils/download_files.dart';
 
 class MusicRepository {
   final db = DatabaseHelper();
+  Connection? connection;
+
+  Future<Connection> get dbConnection async {
+    if (connection != null && connection!.isOpen) {
+      return connection!;
+    }
+
+    connection = await Connection.open(
+      Endpoint(
+        host: dotenv.env['NEON_HOST'] ?? '',
+        database: dotenv.env['NEON_DATABASE'] ?? '',
+        username: dotenv.env['NEON_USER'] ?? '',
+        password: dotenv.env['NEON_PASSWORD'] ?? '',
+        port: 5432,
+      ),
+      settings: const ConnectionSettings(
+        sslMode: SslMode.require
+      ),
+    );
+
+    return connection!;
+  }
 
   Future<List> getAllMusics() async {
     try {
-      return await Supabase.instance.client.from('songs').select();
+      final conn = await dbConnection;
+      final result = await conn.execute('SELECT * FROM songs');
+      return result.map((row) => row.toColumnMap()).toList();
     } catch (e) {
       print(e);
       return [];

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconicmusic/views/Home_view.dart';
@@ -21,9 +20,6 @@ void main() async {
 
 Future<void> loadServices() async {
   await dotenv.load(fileName: ".env");
-  await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL'] ?? '',
-      anonKey: dotenv.env['SUPABASE_KEY'] ?? '');
   await MobileAds.instance.initialize();
 }
 
