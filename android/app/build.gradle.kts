@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.dnv.dev.iconicmusic"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "28.2.13676358"
 
     compileOptions {
@@ -32,8 +32,8 @@ android {
     defaultConfig {
         applicationId = "com.dnv.dev.iconicmusic"
         minSdk = flutter.minSdkVersion
-        targetSdk = 36
-        versionCode = 17
+        targetSdk = 37
+        versionCode = 19
         versionName = flutter.versionName
     }
 
